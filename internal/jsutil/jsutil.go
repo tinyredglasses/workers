@@ -47,7 +47,7 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println("awaitpromise1")
 	resultCh := make(chan js.Value)
 	errCh := make(chan error)
-	var then, catch js.Func
+	//var then, catch js.Func
 	fmt.Println("awaitpromise2")
 
 	//var result js.Value
@@ -83,7 +83,7 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println("awaitpromise4")
 	fmt.Println(promiseVal)
 
-	promiseVal.Call("then", then).Call("catch", catch)
+	//promiseVal.Call("then", then).Call("catch", catch)
 	fmt.Println("awaitpromise5")
 
 	fmt.Println(resultCh == nil)
