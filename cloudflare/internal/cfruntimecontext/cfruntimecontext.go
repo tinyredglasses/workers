@@ -3,9 +3,8 @@ package cfruntimecontext
 import (
 	"context"
 	"errors"
+	"github.com/tinyredglasses/workers/runtimecontext"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/runtimecontext"
 )
 
 /**

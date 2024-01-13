@@ -3,13 +3,12 @@ package workers
 import (
 	"context"
 	"fmt"
+	jshttp2 "github.com/tinyredglasses/workers/jshttp"
+	"github.com/tinyredglasses/workers/jsutil"
+	"github.com/tinyredglasses/workers/runtimecontext"
 	"io"
 	"net/http"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jshttp"
-	"github.com/tinyredglasses/workers/internal/jsutil"
-	"github.com/tinyredglasses/workers/internal/runtimecontext"
 )
 
 var httpHandler http.Handler
@@ -49,14 +48,14 @@ func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) (js.Value, error) {
 	if httpHandler == nil {
 		return js.Value{}, fmt.Errorf("Serve must be called before handleRequest.")
 	}
-	req, err := jshttp.ToRequest(reqObj)
+	req, err := jshttp2.ToRequest(reqObj)
 	if err != nil {
 		panic(err)
 	}
 	ctx := runtimecontext.New(context.Background(), runtimeCtxObj)
 	req = req.WithContext(ctx)
 	reader, writer := io.Pipe()
-	w := &jshttp.ResponseWriter{
+	w := &jshttp2.ResponseWriter{
 		HeaderValue: http.Header{},
 		StatusCode:  http.StatusOK,
 		Reader:      reader,

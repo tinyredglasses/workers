@@ -2,13 +2,12 @@ package sockets
 
 import (
 	"context"
+	jsutil2 "github.com/tinyredglasses/workers/jsutil"
 	"io"
 	"net"
 	"os"
 	"syscall/js"
 	"time"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 func newSocket(ctx context.Context, sockVal js.Value, readDeadline, writeDeadline time.Time) *Socket {
@@ -19,7 +18,7 @@ func newSocket(ctx context.Context, sockVal js.Value, readDeadline, writeDeadlin
 		ctx:    ctx,
 		cancel: cancel,
 
-		reader:    jsutil.ConvertStreamReaderToReader(readerVal),
+		reader:    jsutil2.ConvertStreamReaderToReader(readerVal),
 		writerVal: writerVal,
 
 		readDeadline:  readDeadline,
@@ -77,9 +76,9 @@ func (t *Socket) Write(b []byte) (n int, err error) {
 	defer cancel()
 	done := make(chan struct{})
 	go func() {
-		arr := jsutil.NewUint8Array(len(b))
+		arr := jsutil2.NewUint8Array(len(b))
 		js.CopyBytesToJS(arr, b)
-		_, err = jsutil.AwaitPromise(t.writerVal.Call("write", arr))
+		_, err = jsutil2.AwaitPromise(t.writerVal.Call("write", arr))
 		// TODO: handle error
 		if err == nil {
 			n = len(b)

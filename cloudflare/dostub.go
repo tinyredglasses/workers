@@ -3,12 +3,12 @@ package cloudflare
 import (
 	"context"
 	"fmt"
+	jshttp2 "github.com/tinyredglasses/workers/jshttp"
+	"github.com/tinyredglasses/workers/jsutil"
 	"net/http"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers/cloudflare/internal/cfruntimecontext"
-	"github.com/tinyredglasses/workers/internal/jshttp"
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // DurableObjectNamespace represents the namespace of the durable object.
@@ -61,7 +61,7 @@ type DurableObjectStub struct {
 //
 // https://developers.cloudflare.com/workers/runtime-apis/durable-objects/#sending-http-requests
 func (s *DurableObjectStub) Fetch(req *http.Request) (*http.Response, error) {
-	jsReq := jshttp.ToJSRequest(req)
+	jsReq := jshttp2.ToJSRequest(req)
 
 	promise := s.val.Call("fetch", jsReq)
 	jsRes, err := jsutil.AwaitPromise(promise)
@@ -69,5 +69,5 @@ func (s *DurableObjectStub) Fetch(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 
-	return jshttp.ToResponse(jsRes)
+	return jshttp2.ToResponse(jsRes)
 }

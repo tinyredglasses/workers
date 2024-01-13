@@ -3,11 +3,11 @@ package cloudflare
 import (
 	"context"
 	"fmt"
+	"github.com/tinyredglasses/workers/jsutil"
 	"io"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers/cloudflare/internal/cfruntimecontext"
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // R2Bucket represents interface of Cloudflare Worker's R2 Bucket instance.

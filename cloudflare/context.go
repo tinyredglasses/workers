@@ -2,8 +2,8 @@ package cloudflare
 
 import (
 	"context"
-	"github.com/tinyredglasses/workers/internal/jsutil"
-	"github.com/tinyredglasses/workers/internal/runtimecontext"
+	"github.com/tinyredglasses/workers/jsutil"
+	"github.com/tinyredglasses/workers/runtimecontext"
 )
 
 func CreateContext() context.Context {

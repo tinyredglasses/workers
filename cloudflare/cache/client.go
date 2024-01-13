@@ -1,9 +1,8 @@
 package cache
 
 import (
+	"github.com/tinyredglasses/workers/jsutil"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 var cache = js.Global().Get("caches")

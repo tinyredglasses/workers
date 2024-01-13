@@ -2,11 +2,10 @@ package cache
 
 import (
 	"errors"
+	jshttp2 "github.com/tinyredglasses/workers/jshttp"
+	"github.com/tinyredglasses/workers/jsutil"
 	"net/http"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jshttp"
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // Put attempts to add a response to the cache, using the given request as the key.
@@ -16,7 +15,7 @@ import (
 // - Cache-Control instructs not to cache or if the response is too large.
 // docs: https://developers.cloudflare.com/workers/runtime-apis/cache/#put
 func (c *Cache) Put(req *http.Request, res *http.Response) error {
-	_, err := jsutil.AwaitPromise(c.instance.Call("put", jshttp.ToJSRequest(req), jshttp.ToJSResponse(res)))
+	_, err := jsutil.AwaitPromise(c.instance.Call("put", jshttp2.ToJSRequest(req), jshttp2.ToJSResponse(res)))
 	if err != nil {
 		return err
 	}
@@ -45,14 +44,14 @@ func (opts *MatchOptions) toJS() js.Value {
 // Match returns the response object keyed to that request.
 // docs: https://developers.cloudflare.com/workers/runtime-apis/cache/#match
 func (c *Cache) Match(req *http.Request, opts *MatchOptions) (*http.Response, error) {
-	res, err := jsutil.AwaitPromise(c.instance.Call("match", jshttp.ToJSRequest(req), opts.toJS()))
+	res, err := jsutil.AwaitPromise(c.instance.Call("match", jshttp2.ToJSRequest(req), opts.toJS()))
 	if err != nil {
 		return nil, err
 	}
 	if res.IsUndefined() {
 		return nil, ErrCacheNotFound
 	}
-	return jshttp.ToResponse(res)
+	return jshttp2.ToResponse(res)
 }
 
 // DeleteOptions represents the options of the Delete method.
@@ -75,7 +74,7 @@ func (opts *DeleteOptions) toJS() js.Value {
 // This method only purges content of the cache in the data center that the Worker was invoked.
 // Returns ErrCacheNotFount if the response was not cached.
 func (c *Cache) Delete(req *http.Request, opts *DeleteOptions) error {
-	res, err := jsutil.AwaitPromise(c.instance.Call("delete", jshttp.ToJSRequest(req), opts.toJS()))
+	res, err := jsutil.AwaitPromise(c.instance.Call("delete", jshttp2.ToJSRequest(req), opts.toJS()))
 	if err != nil {
 		return err
 	}

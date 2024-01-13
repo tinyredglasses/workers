@@ -2,12 +2,12 @@ package sockets
 
 import (
 	"context"
+	jsutil2 "github.com/tinyredglasses/workers/jsutil"
 	"net"
 	"syscall/js"
 	"time"
 
 	"github.com/tinyredglasses/workers/cloudflare/internal/cfruntimecontext"
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 type SecureTransport string
@@ -34,7 +34,7 @@ func Connect(ctx context.Context, addr string, opts *SocketOptions) (net.Conn, e
 	if err != nil {
 		return nil, err
 	}
-	optionsObj := jsutil.NewObject()
+	optionsObj := jsutil2.NewObject()
 	if opts != nil {
 		if opts.AllowHalfOpen {
 			optionsObj.Set("allowHalfOpen", true)
@@ -43,7 +43,7 @@ func Connect(ctx context.Context, addr string, opts *SocketOptions) (net.Conn, e
 			optionsObj.Set("secureTransport", string(opts.SecureTransport))
 		}
 	}
-	sockVal, err := jsutil.TryCatch(js.FuncOf(func(_ js.Value, args []js.Value) any {
+	sockVal, err := jsutil2.TryCatch(js.FuncOf(func(_ js.Value, args []js.Value) any {
 		return connect.Invoke(addr, optionsObj)
 	}))
 	if err != nil {

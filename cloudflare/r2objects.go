@@ -2,9 +2,8 @@ package cloudflare
 
 import (
 	"fmt"
+	"github.com/tinyredglasses/workers/jsutil"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // R2Objects represents Cloudflare R2 objects.

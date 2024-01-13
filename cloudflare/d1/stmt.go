@@ -5,10 +5,9 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
+	"github.com/tinyredglasses/workers/jsutil"
 	"syscall/js"
 	"time"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 type stmt struct {

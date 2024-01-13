@@ -1,12 +1,11 @@
 package jshttp
 
 import (
+	jsutil2 "github.com/tinyredglasses/workers/jsutil"
 	"io"
 	"net/http"
 	"strconv"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // ToResponse converts JavaScript sides Response to *http.Response.
@@ -14,7 +13,7 @@ import (
 func ToResponse(res js.Value) (*http.Response, error) {
 	status := res.Get("status").Int()
 	promise := res.Call("blob")
-	blob, err := jsutil.AwaitPromise(promise)
+	blob, err := jsutil2.AwaitPromise(promise)
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +24,7 @@ func ToResponse(res js.Value) (*http.Response, error) {
 		Status:        strconv.Itoa(status) + " " + res.Get("statusText").String(),
 		StatusCode:    status,
 		Header:        header,
-		Body:          io.NopCloser(jsutil.ConvertStreamReaderToReader(blob.Call("stream").Call("getReader"))),
+		Body:          io.NopCloser(jsutil2.ConvertStreamReaderToReader(blob.Call("stream").Call("getReader"))),
 		ContentLength: contentLength,
 	}, nil
 }
@@ -42,7 +41,7 @@ func newJSResponse(statusCode int, headers http.Header, body io.ReadCloser) js.V
 	if status == 0 {
 		status = http.StatusOK
 	}
-	respInit := jsutil.NewObject()
+	respInit := jsutil2.NewObject()
 	respInit.Set("status", status)
 	respInit.Set("statusText", http.StatusText(status))
 	respInit.Set("headers", ToJSHeader(headers))
@@ -50,8 +49,8 @@ func newJSResponse(statusCode int, headers http.Header, body io.ReadCloser) js.V
 		status == http.StatusNoContent ||
 		status == http.StatusResetContent ||
 		status == http.StatusNotModified {
-		return jsutil.ResponseClass.New(jsutil.Null, respInit)
+		return jsutil2.ResponseClass.New(jsutil2.Null, respInit)
 	}
-	readableStream := jsutil.ConvertReaderToReadableStream(body)
-	return jsutil.ResponseClass.New(readableStream, respInit)
+	readableStream := jsutil2.ConvertReaderToReadableStream(body)
+	return jsutil2.ResponseClass.New(readableStream, respInit)
 }

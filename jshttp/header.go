@@ -1,11 +1,10 @@
 package jshttp
 
 import (
+	"github.com/tinyredglasses/workers/jsutil"
 	"net/http"
 	"strings"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // ToHeader converts JavaScript sides Headers to http.Header.

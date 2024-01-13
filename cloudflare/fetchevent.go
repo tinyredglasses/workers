@@ -2,10 +2,10 @@ package cloudflare
 
 import (
 	"context"
+	"github.com/tinyredglasses/workers/jsutil"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers/cloudflare/internal/cfruntimecontext"
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // WaitUntil extends the lifetime of the "fetch" event.

@@ -4,11 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/tinyredglasses/workers/jsutil"
+	"github.com/tinyredglasses/workers/runtimecontext"
 	"syscall/js"
 	"time"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
-	"github.com/tinyredglasses/workers/internal/runtimecontext"
 )
 
 // Event represents information about the Cron that invoked this worker.

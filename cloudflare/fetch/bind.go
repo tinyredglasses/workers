@@ -2,11 +2,10 @@ package fetch
 
 import (
 	"errors"
+	jshttp2 "github.com/tinyredglasses/workers/jshttp"
+	"github.com/tinyredglasses/workers/jsutil"
 	"net/http"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jshttp"
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // fetch is a function that reproduces cloudflare fetch.
@@ -18,7 +17,7 @@ func fetch(namespace js.Value, req *http.Request, init *RequestInit) (*http.Resp
 	promise := namespace.Call("fetch",
 		// The Request object to fetch.
 		// Docs: https://developers.cloudflare.com/workers/runtime-apis/request
-		jshttp.ToJSRequest(req),
+		jshttp2.ToJSRequest(req),
 		// The content of the request.
 		// Docs: https://developers.cloudflare.com/workers/runtime-apis/request#requestinit
 		init.ToJS(),
@@ -27,5 +26,5 @@ func fetch(namespace js.Value, req *http.Request, init *RequestInit) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
-	return jshttp.ToResponse(jsRes)
+	return jshttp2.ToResponse(jsRes)
 }

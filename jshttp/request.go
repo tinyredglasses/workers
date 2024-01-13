@@ -1,14 +1,13 @@
 package jshttp
 
 import (
+	jsutil2 "github.com/tinyredglasses/workers/jsutil"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"syscall/js"
-
-	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // ToBody converts JavaScript sides ReadableStream (can be null) to io.ReadCloser.
@@ -18,7 +17,7 @@ func ToBody(streamOrNull js.Value) io.ReadCloser {
 		return nil
 	}
 	sr := streamOrNull.Call("getReader")
-	return io.NopCloser(jsutil.ConvertStreamReaderToReader(sr))
+	return io.NopCloser(jsutil2.ConvertStreamReaderToReader(sr))
 }
 
 // ToRequest converts JavaScript sides Request to *http.Request.
@@ -46,14 +45,14 @@ func ToRequest(req js.Value) (*http.Request, error) {
 // ToJSRequest converts *http.Request to JavaScript sides Request.
 //   - Request: https://developer.mozilla.org/docs/Web/API/Request
 func ToJSRequest(req *http.Request) js.Value {
-	jsReqOptions := jsutil.NewObject()
+	jsReqOptions := jsutil2.NewObject()
 	jsReqOptions.Set("method", req.Method)
 	jsReqOptions.Set("headers", ToJSHeader(req.Header))
 	jsReqBody := js.Undefined()
 	if req.Body != nil {
-		jsReqBody = jsutil.ConvertReaderToReadableStream(req.Body)
+		jsReqBody = jsutil2.ConvertReaderToReadableStream(req.Body)
 	}
 	jsReqOptions.Set("body", jsReqBody)
-	jsReq := jsutil.RequestClass.New(req.URL.String(), jsReqOptions)
+	jsReq := jsutil2.RequestClass.New(req.URL.String(), jsReqOptions)
 	return jsReq
 }
