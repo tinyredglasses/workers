@@ -42,6 +42,10 @@ func (s *stmt) ExecContext(_ context.Context, args []driver.NamedValue) (driver.
 	for i, arg := range args {
 		argValues[i] = arg.Value
 	}
+
+	fmt.Println(s.stmtObj.Get("bind").String())
+	fmt.Println(s.stmtObj.Get("run").String())
+
 	resultPromise := s.stmtObj.Call("bind", argValues...).Call("run")
 	resultObj, err := jsutil.AwaitPromise(resultPromise)
 	if err != nil {
@@ -70,13 +74,10 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	fmt.Println(argValues)
 	//fmt.Println(argValues)
 
-	v1 := s.stmtObj.Get("all")
-
-	if v1.IsUndefined() {
-		fmt.Println("UN DEFINED")
-	}
-
-	resultPromise := s.stmtObj.Call("all")
+	//v1 := s.stmtObj.Get("all")
+	fmt.Println(s.stmtObj.Get("bind").String())
+	fmt.Println(s.stmtObj.Get("all").String())
+	resultPromise := s.stmtObj.Call("bind").Call("all")
 	fmt.Println("stmt3")
 
 	fmt.Println(resultPromise)
