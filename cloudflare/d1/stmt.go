@@ -66,6 +66,8 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	resultPromise := s.stmtObj.Call("bind", argValues...).Call("all")
 	fmt.Println("stmt3")
 
+	fmt.Println(resultPromise)
+
 	rowsObj, err := jsutil.AwaitPromise(resultPromise)
 	fmt.Println("stmt4")
 

@@ -40,28 +40,42 @@ func ArrayFrom(v js.Value) js.Value {
 }
 
 func AwaitPromise(promiseVal js.Value) (js.Value, error) {
+	fmt.Println("awaitpromise1")
 	resultCh := make(chan js.Value)
 	errCh := make(chan error)
 	var then, catch js.Func
+	fmt.Println("awaitpromise2")
+
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
 		defer then.Release()
 		result := args[0]
 		resultCh <- result
 		return js.Undefined()
 	})
+	fmt.Println("awaitpromise3")
+
 	catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
 		defer catch.Release()
 		result := args[0]
 		errCh <- fmt.Errorf("failed on promise: %s", result.Call("toString").String())
 		return js.Undefined()
 	})
+	fmt.Println("awaitpromise4")
+
 	promiseVal.Call("then", then).Call("catch", catch)
+	fmt.Println("awaitpromise5")
+
 	select {
 	case result := <-resultCh:
+		fmt.Println("awaitpromise6")
 		return result, nil
 	case err := <-errCh:
+		fmt.Println("awaitpromise7")
+
 		return js.Value{}, err
+
 	}
+
 }
 
 // StrRecordToMap converts JavaScript side's Record<string, string> into map[string]string.
