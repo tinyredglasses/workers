@@ -70,6 +70,12 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	fmt.Println(argValues)
 	//fmt.Println(argValues)
 
+	v1 := s.stmtObj.Get("all")
+
+	if v1.IsUndefined() {
+		fmt.Println("UN DEFINED")
+	}
+
 	resultPromise := s.stmtObj.Call("all")
 	fmt.Println("stmt3")
 
