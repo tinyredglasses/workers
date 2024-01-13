@@ -40,6 +40,9 @@ func ArrayFrom(v js.Value) js.Value {
 }
 
 func AwaitPromise(promiseVal js.Value) (js.Value, error) {
+	fmt.Println(promiseVal.Get("then"))
+	fmt.Println(promiseVal.Get("catch"))
+
 	fmt.Println("awaitpromise1")
 	resultCh := make(chan js.Value)
 	errCh := make(chan error)
