@@ -67,9 +67,13 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	fmt.Println("stmt3")
 
 	rowsObj, err := jsutil.AwaitPromise(resultPromise)
+	fmt.Println("stmt4")
+
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("stmt5")
+
 	if !rowsObj.Get("success").Bool() {
 		return nil, errors.New("d1: failed to query")
 	}
