@@ -8,6 +8,5 @@ import (
 
 func CreateContext() context.Context {
 	runtimeCtxObj := jsutil.RuntimeContext
-
 	return runtimecontext.New(context.Background(), runtimeCtxObj)
 }
