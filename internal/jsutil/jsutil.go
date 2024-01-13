@@ -2,6 +2,7 @@ package jsutil
 
 import (
 	"fmt"
+	"runtime"
 	"syscall/js"
 	"time"
 )
@@ -40,6 +41,17 @@ func ArrayFrom(v js.Value) js.Value {
 }
 
 func AwaitPromise(promiseVal js.Value) (js.Value, error) {
+
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("caught panic: %s\n", r)
+			var stack [4096]byte
+			n := runtime.Stack(stack[:], false)
+			fmt.Printf("%s", stack[:n])
+			fmt.Println("\n// notice how 'trigger()' appears in the stack trace above,\n// even though the 'defer' is called from 'withTrace()'")
+		}
+	}()
+
 	fmt.Println(promiseVal.Get("then"))
 	fmt.Println(promiseVal.Get("catch"))
 
@@ -93,7 +105,6 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	case err := <-errCh:
 		fmt.Println("awaitpromise7")
 		return js.Value{}, err
-
 	}
 
 }
