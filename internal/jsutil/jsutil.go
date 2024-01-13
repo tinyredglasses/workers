@@ -40,70 +40,33 @@ func ArrayFrom(v js.Value) js.Value {
 }
 
 func AwaitPromise(promiseVal js.Value) (js.Value, error) {
-
-	fmt.Println(promiseVal.Get("then"))
-	fmt.Println(promiseVal.Get("catch"))
-
-	fmt.Println("awaitpromise1")
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from", r)
+		}
+	}()
 	resultCh := make(chan js.Value)
 	errCh := make(chan error)
-	//var then, catch js.Func
-	fmt.Println("awaitpromise2")
-
-	//var result js.Value
-
-	//then = js.FuncOf(func(_ js.Value, args []js.Value) any {
-	//	fmt.Println("then0")
-	//	defer then.Release()
-	//	fmt.Println("then1")
-	//
-	//	result = args[0]
-	//	fmt.Println("then2")
-	//	resultCh <- result
-	//	fmt.Println("then3")
-	//
-	//	return js.Undefined()
-	//})
-	//fmt.Println("awaitpromise3")
-	//
-	//catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
-	//	fmt.Println("catch0")
-	//
-	//	defer catch.Release()
-	//	fmt.Println("catch1")
-	//
-	//	result := args[0]
-	//	fmt.Println("catch2")
-	//
-	//	errCh <- fmt.Errorf("failed on promise: %s", result.Call("toString").String())
-	//	fmt.Println("catch3")
-	//
-	//	return js.Undefined()
-	//})
-	fmt.Println("awaitpromise4")
-	fmt.Println(promiseVal)
-
-	//promiseVal.Call("then", then).Call("catch", catch)
-	fmt.Println("awaitpromise5")
-
-	fmt.Println(resultCh == nil)
-	fmt.Println(errCh == nil)
-	fmt.Println("awaitpromise6")
-
-	time.Sleep(time.Second)
-	fmt.Println("awaitpromise7")
-
-	return js.Value{}, nil
-	//select {
-	//
-	//case result := <-resultCh:
-	//	fmt.Println("awaitpromise8")
-	//	return result, nil
-	//case err := <-errCh:
-	//	fmt.Println("awaitpromise9")
-	//	return js.Value{}, err
-	//}
-
+	var then, catch js.Func
+	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
+		defer then.Release()
+		result := args[0]
+		resultCh <- result
+		return js.Undefined()
+	})
+	catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
+		defer catch.Release()
+		result := args[0]
+		errCh <- fmt.Errorf("failed on promise: %s", result.Call("toString").String())
+		return js.Undefined()
+	})
+	promiseVal.Call("then", then).Call("catch", catch)
+	select {
+	case result := <-resultCh:
+		return result, nil
+	case err := <-errCh:
+		return js.Value{}, err
+	}
 }
 
 // StrRecordToMap converts JavaScript side's Record<string, string> into map[string]string.

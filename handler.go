@@ -17,16 +17,20 @@ var httpHandler http.Handler
 func init() {
 	var handleRequestCallback js.Func
 	handleRequestCallback = js.FuncOf(func(this js.Value, args []js.Value) any {
+		fmt.Println("inner1")
 		if len(args) > 1 {
 			panic(fmt.Errorf("too many args given to handleRequest: %d", len(args)))
 		}
 		reqObj := args[0]
+		fmt.Println(reqObj)
 		runtimeCtxObj := jsutil.RuntimeContext
 		var cb js.Func
 		cb = js.FuncOf(func(_ js.Value, pArgs []js.Value) any {
+			fmt.Println("inner2")
 			defer cb.Release()
 			resolve := pArgs[0]
 			go func() {
+				fmt.Println("inner3")
 				res, err := handleRequest(reqObj, runtimeCtxObj)
 				if err != nil {
 					panic(err)

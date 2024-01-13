@@ -38,6 +38,12 @@ func (s *stmt) Exec([]driver.Value) (driver.Result, error) {
 // ExecContext executes prepared statement.
 // Given []drier.NamedValue's `Name` field will be ignored because Cloudflare D1 client doesn't support it.
 func (s *stmt) ExecContext(_ context.Context, args []driver.NamedValue) (driver.Result, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from", r)
+		}
+	}()
+
 	argValues := make([]any, len(args))
 	for i, arg := range args {
 		argValues[i] = arg.Value
@@ -61,6 +67,12 @@ func (s *stmt) Query([]driver.Value) (driver.Rows, error) {
 }
 
 func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver.Rows, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from", r)
+		}
+	}()
+
 	fmt.Println("stmt1")
 	argValues := make([]any, len(args))
 	fmt.Println("stmt2")
