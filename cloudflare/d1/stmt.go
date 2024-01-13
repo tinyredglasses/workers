@@ -75,6 +75,7 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 		return nil, err
 	}
 	fmt.Println("stmt5")
+	fmt.Println(rowsObj)
 
 	if !rowsObj.Get("success").Bool() {
 		return nil, errors.New("d1: failed to query")

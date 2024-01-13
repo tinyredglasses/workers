@@ -48,22 +48,37 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
 		defer then.Release()
+		fmt.Println("then1")
+
 		result := args[0]
+		fmt.Println("then2")
 		resultCh <- result
+		fmt.Println("then3")
+
 		return js.Undefined()
 	})
 	fmt.Println("awaitpromise3")
 
 	catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
 		defer catch.Release()
+		fmt.Println("catch1")
+
 		result := args[0]
+		fmt.Println("catch2")
+
 		errCh <- fmt.Errorf("failed on promise: %s", result.Call("toString").String())
+		fmt.Println("catch3")
+
 		return js.Undefined()
 	})
 	fmt.Println("awaitpromise4")
+	fmt.Println(promiseVal)
 
 	promiseVal.Call("then", then).Call("catch", catch)
 	fmt.Println("awaitpromise5")
+
+	fmt.Println(resultCh == nil)
+	fmt.Println(errCh == nil)
 
 	select {
 	case result := <-resultCh:
@@ -71,7 +86,6 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 		return result, nil
 	case err := <-errCh:
 		fmt.Println("awaitpromise7")
-
 		return js.Value{}, err
 
 	}
