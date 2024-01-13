@@ -50,7 +50,8 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	var then, catch js.Func
 	fmt.Println("awaitpromise2")
 
-	var result
+	var result js.Value
+
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
 		fmt.Println("then0")
 		defer then.Release()
