@@ -68,12 +68,6 @@ func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) (js.Value, error) {
 	return w.ToJSResponse(), nil
 }
 
-func CreateContext() context.Context {
-	runtimeCtxObj := jsutil.RuntimeContext
-
-	return runtimecontext.New(context.Background(), runtimeCtxObj)
-}
-
 //go:wasmimport workers ready
 func ready()
 
