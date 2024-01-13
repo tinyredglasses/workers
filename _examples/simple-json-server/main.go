@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/syumai/workers"
+	"github.com/tinyredglasses/workers"
 )
 
 type HelloRequest struct {

@@ -6,8 +6,8 @@ import (
 	"io"
 	"syscall/js"
 
-	"github.com/syumai/workers/cloudflare/internal/cfruntimecontext"
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers/cloudflare/internal/cfruntimecontext"
+	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // KVNamespace represents interface of Cloudflare Worker's KV namespace instance.

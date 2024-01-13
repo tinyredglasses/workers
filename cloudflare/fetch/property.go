@@ -3,7 +3,7 @@ package fetch
 import (
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers/internal/jsutil"
 )
 
 // RedirectMode represents the redirect mode of a fetch() request.

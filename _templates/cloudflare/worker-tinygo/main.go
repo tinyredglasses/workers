@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/syumai/workers"
+	"github.com/tinyredglasses/workers"
 )
 
 func main() {

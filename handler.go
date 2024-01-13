@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jshttp"
-	"github.com/syumai/workers/internal/jsutil"
-	"github.com/syumai/workers/internal/runtimecontext"
+	"github.com/tinyredglasses/workers/internal/jshttp"
+	"github.com/tinyredglasses/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers/internal/runtimecontext"
 )
 
 var httpHandler http.Handler
@@ -68,6 +68,12 @@ func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) (js.Value, error) {
 	return w.ToJSResponse(), nil
 }
 
+func CreateContext() context.Context {
+	runtimeCtxObj := jsutil.RuntimeContext
+
+	return runtimecontext.New(context.Background(), runtimeCtxObj)
+}
+
 //go:wasmimport workers ready
 func ready()
 
@@ -80,4 +86,8 @@ func Serve(handler http.Handler) {
 	httpHandler = handler
 	ready()
 	select {}
+}
+
+func Init() {
+
 }

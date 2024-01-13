@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/syumai/tinyutil/httputil"
-	"github.com/syumai/workers"
+	"github.com/tinyredglasses/workers"
 )
 
 const (

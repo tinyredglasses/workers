@@ -7,8 +7,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/cloudflare"
+	"github.com/tinyredglasses/workers"
+	"github.com/tinyredglasses/workers/cloudflare"
 )
 
 // counterNamespace is a bounded KV namespace for storing counter.
