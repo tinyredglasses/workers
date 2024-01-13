@@ -50,12 +50,13 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	var then, catch js.Func
 	fmt.Println("awaitpromise2")
 
+	var result
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
 		fmt.Println("then0")
 		defer then.Release()
 		fmt.Println("then1")
 
-		result := args[0]
+		result = args[0]
 		fmt.Println("then2")
 		resultCh <- result
 		fmt.Println("then3")
@@ -88,6 +89,7 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println(errCh == nil)
 
 	time.Sleep(time.Second)
+	return result, nil
 	//select {
 	//
 	//case result := <-resultCh:
