@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"syscall/js"
+	"time"
 
 	"github.com/tinyredglasses/workers/internal/jsutil"
 )
@@ -74,21 +75,23 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 
 	fmt.Println(resultPromise)
 
-	rowsObj, err := jsutil.AwaitPromise(resultPromise)
+	//rowsObj, err := jsutil.AwaitPromise(resultPromise)
+	time.Sleep(time.Second)
 	fmt.Println("stmt4")
 
-	if err != nil {
-		return nil, err
-	}
+	//if err != nil {
+	//	return nil, err
+	//}
 	fmt.Println("stmt5")
-	fmt.Println(rowsObj)
+	//fmt.Println(rowsObj)
 
-	if !rowsObj.Get("success").Bool() {
-		return nil, errors.New("d1: failed to query")
-	}
+	//if !rowsObj.Get("success").Bool() {
+	//	return nil, errors.New("d1: failed to query")
+	//}
 	fmt.Println("stmt6")
 
 	return &rows{
-		rowsObj: rowsObj.Get("results"),
+		//rowsObj: rowsObj.Get("results"),
+		rowsObj: js.Value{},
 	}, nil
 }
