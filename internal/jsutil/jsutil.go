@@ -47,6 +47,7 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println("awaitpromise2")
 
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
+		fmt.Println("then0")
 		defer then.Release()
 		fmt.Println("then1")
 
@@ -60,6 +61,8 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println("awaitpromise3")
 
 	catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
+		fmt.Println("catch0")
+
 		defer catch.Release()
 		fmt.Println("catch1")
 
