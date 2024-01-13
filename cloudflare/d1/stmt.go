@@ -67,6 +67,8 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	}
 
 	fmt.Println(argValues)
+	fmt.Println(argValues)
+
 	resultPromise := s.stmtObj.Call("bind", argValues...).Call("all")
 	fmt.Println("stmt3")
 

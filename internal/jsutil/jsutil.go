@@ -87,14 +87,16 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println(resultCh == nil)
 	fmt.Println(errCh == nil)
 
-	select {
-	case result := <-resultCh:
-		fmt.Println("awaitpromise6")
-		return result, nil
-	case err := <-errCh:
-		fmt.Println("awaitpromise7")
-		return js.Value{}, err
-	}
+	time.Sleep(time.Second)
+	//select {
+	//
+	//case result := <-resultCh:
+	//	fmt.Println("awaitpromise6")
+	//	return result, nil
+	//case err := <-errCh:
+	//	fmt.Println("awaitpromise7")
+	//	return js.Value{}, err
+	//}
 
 }
 
