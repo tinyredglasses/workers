@@ -88,8 +88,11 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 
 	fmt.Println(resultCh == nil)
 	fmt.Println(errCh == nil)
+	fmt.Println("awaitpromise6")
 
 	time.Sleep(time.Second)
+	fmt.Println("awaitpromise7")
+
 	return result, nil
 	//select {
 	//
