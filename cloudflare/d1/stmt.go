@@ -59,6 +59,7 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	fmt.Println("stmt1")
 	argValues := make([]any, len(args))
 	fmt.Println("stmt2")
+	fmt.Println(s.stmtObj)
 
 	for i, arg := range args {
 		argValues[i] = arg.Value

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql/driver"
 	"errors"
+	"fmt"
 	"syscall/js"
 )
 
@@ -18,6 +19,7 @@ var (
 )
 
 func (c *Conn) Prepare(query string) (driver.Stmt, error) {
+	fmt.Println("Prepare")
 	stmtObj := c.dbObj.Call("prepare", query)
 	return &stmt{
 		stmtObj: stmtObj,
@@ -25,6 +27,8 @@ func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 }
 
 func (c *Conn) PrepareContext(_ context.Context, query string) (driver.Stmt, error) {
+	fmt.Println("PrepareContext")
+
 	return c.Prepare(query)
 }
 
