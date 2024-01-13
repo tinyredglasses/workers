@@ -63,18 +63,21 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 
 	for i, arg := range args {
 		argValues[i] = arg.Value
+		fmt.Println(arg.Value)
 	}
-	rowsObj := s.stmtObj.Call("bind", argValues...).Call("all")
+
+	fmt.Println(argValues)
+	resultPromise := s.stmtObj.Call("bind", argValues...).Call("all")
 	fmt.Println("stmt3")
 
-	//fmt.Println(resultPromise)
+	fmt.Println(resultPromise)
 
-	//rowsObj, err := jsutil.AwaitPromise(resultPromise)
+	rowsObj, err := jsutil.AwaitPromise(resultPromise)
 	fmt.Println("stmt4")
 
-	//if err != nil {
-	//	return nil, err
-	//}
+	if err != nil {
+		return nil, err
+	}
 	fmt.Println("stmt5")
 	fmt.Println(rowsObj)
 
